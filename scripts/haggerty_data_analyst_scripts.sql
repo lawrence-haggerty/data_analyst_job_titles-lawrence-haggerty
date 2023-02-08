@@ -55,7 +55,7 @@ WHERE review_count BETWEEN '500' AND '1000';
 --6.	Show the average star rating for companies in each state. The output should show the state as `state` and the average rating for the state as `avg_rating`. Which state shows the highest average rating?
 
 SELECT location AS state, 
-AVG(star_rating) AS avg_rating
+	AVG(star_rating) AS avg_rating
 FROM data_analyst_jobs
 WHERE location IS NOT NULL 
 AND star_rating IS NOT NULL
@@ -80,13 +80,77 @@ FROM data_analyst_jobs;
 
 -- 8.	How many unique job titles are there for California companies?
 
+SELECT location AS state, 
+	COUNT(DISTINCT title) AS job_titles
+FROM data_analyst_jobs
+WHERE location='CA'
+GROUP BY location;
+
+--ANSWER: 230
+
 -- 9.	Find the name of each company and its average star rating for all companies that have more than 5000 reviews across all locations. How many companies are there with more that 5000 reviews across all locations?
+
+SELECT DISTINCT company, 
+	location, 
+	review_count, 
+	star_rating
+FROM data_analyst_jobs
+WHERE review_count>5000
+ORDER BY company ASC;
+--Thinking my way thru the problem...
+
+SELECT DISTINCT company, 
+	AVG(star_rating) AS avg_star_rating, 
+	SUM(review_count)AS sum_review_count
+FROM data_analyst_jobs
+WHERE review_count>5000
+GROUP BY company;
+
+--ANSWER: 41 Companies w/ >5000 Reviews Across All Locations. 
 
 -- 10.	Add the code to order the query in #9 from highest to lowest average star rating. Which company with more than 5000 reviews across all locations in the dataset has the highest star rating? What is that rating?
 
+SELECT DISTINCT company, 
+	AVG(star_rating) AS avg_star_rating, 
+	SUM(review_count)AS sum_review_count
+FROM data_analyst_jobs
+	WHERE review_count>5000
+	GROUP BY company
+	ORDER BY avg_star_rating DESC, 
+	sum_review_count DESC;
+	
+--ANSWER: 6X Companies had an Average Star Rating of 4.199999809 (Kaiser Permanente, Microsoft, American Express, Nike, General Motors, and Unilever), of the 6X Companies: Kaiser Permanente had the Highest Sum for Review Count with 122460 Reviews. 
+
 -- 11.	Find all the job titles that contain the word ‘Analyst’. How many different job titles are there? 
 
+SELECT DISTINCT title
+FROM data_analyst_jobs;
+--Thinking my way thru the problem...
+
+SELECT DISTINCT title
+FROM data_analyst_jobs
+WHERE title LIKE '%Analyst%'
+ORDER BY title ASC;
+
+--754 Different Job Titles Containing 'Analyst'
+--See Below....Search for 'Analyst' does not take Case Sensitivity into Account
+
+SELECT DISTINCT title
+FROM data_analyst_jobs
+WHERE title LIKE '%ANALYST%'
+ORDER BY title ASC;
+
+--Utilizing 'ANALYST' Returns an Additional 17 Records
+
+
+
 -- 12.	How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
+
+SELECT title
+FROM data_analyst_jobs
+WHERE title NOT LIKE '%Analyst%'
+	AND title NOT LIKE '%Analytics%'
+ORDER BY title ASC;
 
 -- **BONUS:**
 -- You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
