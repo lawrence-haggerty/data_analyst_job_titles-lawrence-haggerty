@@ -124,10 +124,6 @@ FROM data_analyst_jobs
 -- 11.	Find all the job titles that contain the word ‘Analyst’. How many different job titles are there? 
 
 SELECT DISTINCT title
-FROM data_analyst_jobs;
---Thinking my way thru the problem...
-
-SELECT DISTINCT title
 FROM data_analyst_jobs
 WHERE title LIKE '%Analyst%'
 ORDER BY title ASC;
@@ -138,10 +134,19 @@ ORDER BY title ASC;
 SELECT DISTINCT title
 FROM data_analyst_jobs
 WHERE title LIKE '%ANALYST%'
+OR title LIKE '%analyst%'
 ORDER BY title ASC;
 
---Utilizing 'ANALYST' Returns an Additional 17 Records
+--Utilizing 'ANALYST' or 'analyst' Returns an Additional 20 Records
 
+SELECT DISTINCT title
+FROM data_analyst_jobs
+WHERE title LIKE '%Analyst%'
+OR title LIKE '%ANALYST%'
+OR title LIKE '%analyst%'
+ORDER BY title ASC;
+
+--ANSWER: 774 Different Job Titles Containing 'Analyst', 'ANALYST', or 'analyst'.
 
 
 -- 12.	How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
@@ -149,8 +154,18 @@ ORDER BY title ASC;
 SELECT title
 FROM data_analyst_jobs
 WHERE title NOT LIKE '%Analyst%'
+	AND title NOT LIKE '%ANALYST%'
+	AND title NOT LIKE '%analyst%'
 	AND title NOT LIKE '%Analytics%'
+	AND title NOT LIKE '%ANALYTICS%'
+	AND title NOT LIKE '%analytics%'
 ORDER BY title ASC;
+
+--ANSWER: 4X different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’. Each of the 4 titles contains the 'Tableau'.
+
+--Using OR vs AND for the Above Statement Returns all 1793 Rows and Negates the NOT LIKE Filter...I Need a Better Understanding of WHY????
+
+
 
 -- **BONUS:**
 -- You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
