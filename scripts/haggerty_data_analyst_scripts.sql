@@ -166,9 +166,43 @@ ORDER BY title ASC;
 --Using OR vs AND for the Above Statement Returns all 1793 Rows and Negates the NOT LIKE Filter...I Need a Better Understanding of WHY????
 
 
-
 -- **BONUS:**
 -- You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
 --  - Disregard any postings where the domain is NULL. 
 --  - Order your results so that the domain with the greatest number of `hard to fill` jobs is at the top. 
 --   - Which three industries are in the top 4 on this list? How many jobs have been listed for more than 3 weeks for each of the top 4?
+
+--Bonus Start:
+
+SELECT *
+FROM data_analyst_jobs
+
+SELECT title, 
+skill, 
+domain, 
+days_since_posting
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%' 
+	AND days_since_posting>21
+	AND domain IS NOT NULL
+ORDER BY domain;
+--Bonus Script 1..Playing with the Table to See Additional Details from the Data
+
+SELECT COUNT (title) AS title_count,
+domain
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%' 
+	AND days_since_posting>21
+	AND domain IS NOT NULL
+GROUP BY domain
+ORDER BY title_count DESC;
+--Bonus Script 2, Above Returns Number of Job Titles by Domain Posted Longer than 3 Weeks with Domain Having the Most Open Positiions at the Top.
+
+--ANSWER Bonus Question
+----Top 3 Industries on Hard to Fill List: 'Internet and Software', 'Banks and Financial Services', 'Consulting and Business Services'
+----Hard to Fill Jobs by Domain: 
+----'Internet and Software' 62
+----'Banks and Finacial Services' 61
+----'Consulting and Business Services' 57
+----'Health Care' 61
+----Total = 241
