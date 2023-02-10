@@ -57,6 +57,14 @@ WHERE review_count BETWEEN '500' AND '1000';
 SELECT location AS state, 
 	AVG(star_rating) AS avg_rating
 FROM data_analyst_jobs
+GROUP BY location
+ORDER BY avg_rating DESC;
+
+--I want to remove NULL returns
+
+SELECT location AS state, 
+	AVG(star_rating) AS avg_rating
+FROM data_analyst_jobs
 WHERE location IS NOT NULL 
 AND star_rating IS NOT NULL
 GROUP BY location
@@ -176,6 +184,22 @@ ORDER BY title ASC;
 
 SELECT *
 FROM data_analyst_jobs
+
+SELECT skill
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%';
+
+SELECT skill
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%';
+--Returns 1090 
+
+SELECT skill
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%'
+OR skill LIKE '%sql%'
+OR  skill LIKE '%Sql%';
+--Returns 1090
 
 SELECT title, 
 skill, 
